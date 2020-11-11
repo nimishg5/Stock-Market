@@ -1,0 +1,67 @@
+import datetime as dt
+import pandas as pd
+import time  as _time
+import requests
+import smtplib
+from datetime import datetime
+from datetime import date 
+from datetime import timedelta
+
+def modify_timestamp(filtered_json):    
+    for i, timestamp in enumerate(filtered_json['timestamp']):
+        filtered_json['timestamp'][i] = datetime.fromtimestamp(timestamp)
+
+def trigger_mail(message):
+    s = smtplib.SMTP('smtp.gmail.com', 587) 
+    s.ehlo()
+    s.starttls() 
+    s.login("nimishfaadu@gmail.com", "idontbelieve") 
+    s.sendmail("nimishfaadu@gmail.com", "131nimish@gmail.com", message) 
+    s.quit()
+    print('Email sent successfully')
+
+def check_for_crossovers(df):
+    crossover = 0
+    for index in df.index:
+        if df['close'][index] > df['20dma'][index]:
+            print ('cross over occoured')
+            crossover = 1
+    
+    if bool(crossover):
+        # trigger a mail once crossover happens
+        trigger_mail('Golden Cross Occoured')
+
+today = date.today()
+olddate = today - timedelta(days = 40)
+
+today = today.strftime('%d-%m-%Y')
+olddate = olddate.strftime('%d-%m-%Y')
+
+start = int(_time.mktime(_time.strptime(olddate, '%d-%m-%Y')))
+end = int(_time.mktime(_time.strptime(today, '%d-%m-%Y')))
+interval = '15m'
+ticker = 'RELIANCE.NS'
+
+print('Fetching Share Prices for Dates ', olddate , " till ", today, " for Script : ", ticker)
+
+# defining a params dict for the parameters to be sent to the API
+params = {'period1': start, 'period2': end, 'interval': interval}
+url = "https://query1.finance.yahoo.com/v8/finance/chart/{}".format(ticker)
+r = requests.get(url=url, params=params)
+data = r.json()
+
+filtered_json = {}
+filtered_json['timestamp'] = data['chart']['result'][0]['timestamp']
+filtered_json['close']     = data['chart']['result'][0]['indicators']['quote'][0]['close']
+filtered_json['volume']    = data['chart']['result'][0]['indicators']['quote'][0]['volume']
+
+modify_timestamp(filtered_json)
+
+# Create DataFrame
+df = pd.DataFrame(filtered_json)
+df['20dma'] =  df['close'].rolling(window=20*4*6).mean()
+df['10dma']  = df['close'].rolling(window=10*4*6).mean()
+df.dropna(inplace=True)
+print(df)
+
+check_for_crossovers(df)
