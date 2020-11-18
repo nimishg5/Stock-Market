@@ -15,32 +15,49 @@ def trigger_mail(message):
     s = smtplib.SMTP('smtp.gmail.com', 587) 
     s.ehlo()
     s.starttls() 
-    s.login("nimishfaadu@gmail.com", "idontbelieve") 
-    s.sendmail("nimishfaadu@gmail.com", "131nimish@gmail.com", message) 
+    s.login("bestscripttracker@gmail.com", "007nimish") 
+    s.sendmail("bestscripttracker@gmail.com", "131nimish@gmail.com", message) 
     s.quit()
     print('Email sent successfully')
 
-def check_for_crossovers(df):
+def check_for_crossovers(df, key1, key2):
     crossover = 0
+    closedPriceLowerThanDma = False
+    counter = 0
+
     for index in df.index:
-        if df['close'][index] > df['20dma'][index]:
-            print ('cross over occoured')
-            crossover = 1
-    
+        if counter == 0:
+            closedPriceLowerThanDma = df[key1][index] < df[key2][index]
+
+        if df[key1][index] > df[key2][index] and closedPriceLowerThanDma:
+            closedPriceLowerThanDma = not closedPriceLowerThanDma
+            crossover = crossover + 1
+            print('Cross Over occoured on ' + str(df['timestamp'][index]))
+        elif df[key1][index] < df[key2][index] and (not closedPriceLowerThanDma):
+            closedPriceLowerThanDma = not closedPriceLowerThanDma
+            crossover = crossover + 1
+            print('Cross Over occoured on ' + str(df['timestamp'][index]))
+        # else:
+            # print('going smooth')
+        counter = counter + 1
+ 
     if bool(crossover):
         # trigger a mail once crossover happens
-        trigger_mail('Golden Cross Occoured')
+        #trigger_mail('Golden Cross Occoured')
+        print('Cross Over Occoured for ' + key1 + '  &  ' + key2 + '  : '+ str(crossover))
+    else:
+        print('Nothing Happened')
 
 today = date.today()
-olddate = today - timedelta(days = 40)
+olddate = today - timedelta(days = 350)
 
 today = today.strftime('%d-%m-%Y')
 olddate = olddate.strftime('%d-%m-%Y')
 
 start = int(_time.mktime(_time.strptime(olddate, '%d-%m-%Y')))
 end = int(_time.mktime(_time.strptime(today, '%d-%m-%Y')))
-interval = '15m'
-ticker = 'RELIANCE.NS'
+interval = '1d'
+ticker = 'BIOCON.NS'
 
 print('Fetching Share Prices for Dates ', olddate , " till ", today, " for Script : ", ticker)
 
@@ -59,9 +76,11 @@ modify_timestamp(filtered_json)
 
 # Create DataFrame
 df = pd.DataFrame(filtered_json)
-df['20dma'] =  df['close'].rolling(window=20*4*6).mean()
-df['10dma']  = df['close'].rolling(window=10*4*6).mean()
+df['200dma'] =  df['close'].rolling(window=200).mean()
+df['50dma']  = df['close'].rolling(window=50).mean()
 df.dropna(inplace=True)
 print(df)
 
-check_for_crossovers(df)
+check_for_crossovers(df, 'close', '200dma')
+check_for_crossovers(df, '50dma', '200dma')
+check_for_crossovers(df, 'close', '50dma')
