@@ -45,6 +45,6 @@ def analyze_chart_for_multi_frames(ticker, timeframe):
     df.dropna(inplace=True)
     # print(df)
 
-    # crossovers_analyzer(df, 'close', '200dma')
-    # crossovers_analyzer(df, '50dma', '200dma')
+    crossovers_analyzer(df, 'close', '200dma', ticker)
+    crossovers_analyzer(df, '50dma', '200dma', ticker)
     crossovers_analyzer(df, 'close', '50dma', ticker)
