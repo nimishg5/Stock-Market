@@ -1,8 +1,8 @@
 from yahooApiForFinance import analyze_chart_for_multi_frames
 from emailSender import *
-from resultModel import getEmailMessage
+from emailMessageResultModel import getEmailMessage
 
-tickers = [
+tickerList = [
     "ADANIPORTS.NS",
     "AMBUJACEM.NS",
     "ASIANPAINT.NS",
@@ -54,8 +54,13 @@ tickers = [
     "YESBANK.NS",
     "ZEEL.NS"]
 
-for i in range(len(tickers)):
-    analyze_chart_for_multi_frames(tickers[i], '15m')
+# This below map will help us to calculate 200MA and 50MA
+timeFrameDaysMap = {"15m": 20,
+                    "30m": 40,
+                    "1h": 100,
+                    "1d": 400}
 
-# print('final analysis : \n' + getEmailMessage())
-trigger_mail(getEmailMessage())
+for i in range(len(tickerList)):
+    analyze_chart_for_multi_frames(tickerList[i], timeFrameDaysMap)
+
+# trigger_mail(getEmailMessage())
