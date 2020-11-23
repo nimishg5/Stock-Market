@@ -5,9 +5,9 @@ def crossovers_analyzer(df, key1, key2, interval, ticker):
     crossover = ''
     closedPriceLowerThanDma = False
     counter = 0
-    emailMessage = ''
     print_stars()
     print_startEndPattern_to_distinguish('start', key1, key2)
+    emailMessage = ''
     for index in df.index:
         if counter == 0:
             closedPriceLowerThanDma = df[key1][index] < df[key2][index]
@@ -24,7 +24,7 @@ def crossovers_analyzer(df, key1, key2, interval, ticker):
     if bool(crossover):
         emailMessage +=  crossover + ' for Script :' + ticker + ' on ' + key1 + ' vs ' + key2 + ' with interval as ' + interval
         print('Cross Over Occoured for Script :' + ticker + ' on ' + key1 + ' vs ' + key2 + '  : '+ str(crossover) + ' on interval : ' + interval)
-
-    print_startEndPattern_to_distinguish('end', key1, key2)
-    print_stars()
-    setEmailMessage(emailMessage)
+        print_startEndPattern_to_distinguish('end', key1, key2)
+        print_stars()
+        # emailMessage += '\n*******************************************'
+        setEmailMessage(emailMessage)

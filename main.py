@@ -1,6 +1,6 @@
 from yahooApiForFinance import analyze_chart_for_multi_frames
 from emailSender import *
-from emailMessageResultModel import getEmailMessage
+from emailMessageResultModel import *
 
 tickerList = [
     "ADANIPORTS.NS",
@@ -60,7 +60,13 @@ timeFrameDaysMap = {"15m": 20,
                     "1h": 100,
                     "1d": 400}
 
+patterMessage = '$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$'
+lineBreak = '\n'
 for i in range(len(tickerList)):
+    setEmailMessage(lineBreak + patterMessage)
     analyze_chart_for_multi_frames(tickerList[i], timeFrameDaysMap)
+    setEmailMessage(patterMessage + lineBreak)
 
-# trigger_mail(getEmailMessage())
+# print('^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^')
+# print(getEmailMessage())
+trigger_mail(getEmailMessage())
