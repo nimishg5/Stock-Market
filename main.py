@@ -14,6 +14,7 @@ lineBreak = '\n'
 
 collection = createConnectionWithDB('stock-analyzer', 'Nifty50')
 tickerList = fetchNifty50AllStocks(collection)
+closeConnection()
 
 for i in range(len(tickerList)):
     setEmailMessage(lineBreak + patterMessage)
