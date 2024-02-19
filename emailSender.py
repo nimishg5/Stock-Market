@@ -5,6 +5,8 @@ def trigger_mail(analysis):
     message = 'Subject: {}\n\n{}'.format(subject, analysis)
     toMailingList = ['131nimish@gmail.com"','nandu.chill06@gmail.com']
 
+    print(analysis)
+
     s = smtplib.SMTP('smtp.gmail.com', 587) 
     s.ehlo()
     s.starttls() 
