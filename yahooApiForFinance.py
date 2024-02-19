@@ -3,6 +3,7 @@ import pandas as pd
 import time as _time
 import requests
 import smtplib
+import json
 from datetime import datetime
 from datetime import date
 from datetime import timedelta
@@ -28,10 +29,16 @@ def analyze_chart_for_multi_frames(ticker, timeFrameDaysMap):
 
         # defining a params dict for the parameters to be sent to the API
         params = {'period1': start, 'period2': end, 'interval': interval}
+        headers = {
+            'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36',
+            'Accept' : '*/*',
+            'Accept-Encoding': 'gzip, deflate, br'
+            }
         url = "https://query1.finance.yahoo.com/v8/finance/chart/{}".format(ticker)
         # print('url is ' + url + '\n with params as ' + str(params))
-        response = requests.get(url=url, params=params)
+        response = requests.get(url=url, params=params, headers=headers)
         data = response.json()
+        
 
         filtered_json = {}
         filtered_json['timestamp'] = data['chart']['result'][0]['timestamp']
