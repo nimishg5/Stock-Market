@@ -27,3 +27,57 @@ RESULT = 'result'
 INDICATORS = 'indicators'
 QUOTE = 'quote'
 DATE_FORMAT = '%d-%m-%Y'
+FIFTEEN_MINS = '15m'
+THIRTY_MINS = '30m'
+ONE_HOUR = '1h'
+ONE_DAY = '1d'
+
+TICKER_LIST = [
+    "ADANIPORTS.NS",
+    "AMBUJACEM.NS",
+    "ASIANPAINT.NS",
+    "AUROPHARMA.NS",
+    "AXISBANK.NS",
+    "BAJAJ-AUTO.NS",
+    "BAJFINANCE.NS",
+    "BPCL.NS",
+    "BHARTIARTL.NS",
+    "BOSCHLTD.NS",
+    "CIPLA.NS",
+    "COALINDIA.NS",
+    "DRREDDY.NS",
+    "EICHERMOT.NS",
+    "GAIL.NS",
+    "HCLTECH.NS",
+    "HDFCBANK.NS",
+    "HEROMOTOCO.NS",
+    "HINDALCO.NS",
+    "HINDPETRO.NS",
+    "HINDUNILVR.NS",
+    "ITC.NS",
+    "ICICIBANK.NS",
+    "IBULHSGFIN.NS",
+    "IOC.NS",
+    "INDUSINDBK.NS",
+    "INFY.NS",
+    "KOTAKBANK.NS",
+    "LT.NS",
+    "LUPIN.NS",
+    "M&M.NS",
+    "MARUTI.NS",
+    "NTPC.NS",
+    "ONGC.NS",
+    "POWERGRID.NS",
+    "RELIANCE.NS",
+    "SBIN.NS",
+    "SUNPHARMA.NS",
+    "TCS.NS",
+    "TATAMOTORS.NS",
+    "TATASTEEL.NS",
+    "TECHM.NS",
+    "UPL.NS",
+    "ULTRACEMCO.NS",
+    "VEDL.NS",
+    "WIPRO.NS",
+    "YESBANK.NS",
+    "ZEEL.NS"]

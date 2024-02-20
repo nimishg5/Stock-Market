@@ -1,3 +1,4 @@
+import appConstants
 from emailMessageResultModel import setEmailMessage
 from patterns import *
 
@@ -14,10 +15,10 @@ def crossovers_analyzer(df, key1, key2, interval, ticker):
 
         if df[key1][index] > df[key2][index] and closedPriceLowerThanDma:
             closedPriceLowerThanDma = not closedPriceLowerThanDma
-            crossover = 'Last Golden Cross Over occoured on ' + str(df['timestamp'][index])
+            crossover = 'Last Golden Cross Over occoured on ' + str(df[appConstants.TIMESTAMP][index])
         elif df[key1][index] < df[key2][index] and (not closedPriceLowerThanDma):
             closedPriceLowerThanDma = not closedPriceLowerThanDma
-            crossover = 'Last Death Cross Over occoured on ' + str(df['timestamp'][index])
+            crossover = 'Last Death Cross Over occoured on ' + str(df[appConstants.TIMESTAMP][index])
         counter = counter + 1
  
     print('crossover value is : ' + str(crossover))
