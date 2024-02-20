@@ -1,3 +1,4 @@
+import appConstants
 from yahooApiForFinance import analyze_chart_for_multi_frames
 from emailSender import *
 from emailMessageResultModel import *
@@ -58,12 +59,11 @@ timeFrameDaysMap = {"15m": 20,
                     "1h": 100,
                     "1d": 400}
 
-patterMessage = '$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$'
-lineBreak = '\n'
+
 for i in range(len(tickerList)):
-    setEmailMessage(lineBreak + patterMessage)
+    setEmailMessage(appConstants.LINE_BREAK + appConstants.MESSAGE_PATTERN)
     analyze_chart_for_multi_frames(tickerList[i], timeFrameDaysMap)
-    setEmailMessage(patterMessage + lineBreak)
+    setEmailMessage(appConstants.MESSAGE_PATTERN + appConstants.LINE_BREAK)
 
 # print('^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^')
 # print(getEmailMessage())

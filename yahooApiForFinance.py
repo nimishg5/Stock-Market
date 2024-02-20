@@ -2,14 +2,15 @@ import datetime as dt
 import pandas as pd
 import time as _time
 import requests
+import appConstants
 from datetime import datetime
 from datetime import date
 from datetime import timedelta
 from stockAnalyzers import crossovers_analyzer
 
 def modify_timestamp(filtered_json):    
-    for i, timestamp in enumerate(filtered_json['timestamp']):
-        filtered_json['timestamp'][i] = datetime.fromtimestamp(timestamp)
+    for i, timestamp in enumerate(filtered_json[appConstants.TIMESTAMP]):
+        filtered_json[appConstants.TIMESTAMP][i] = datetime.fromtimestamp(timestamp)
 
 def analyze_chart_for_multi_frames(ticker, timeFrameDaysMap):
 
@@ -17,39 +18,34 @@ def analyze_chart_for_multi_frames(ticker, timeFrameDaysMap):
         today = date.today()
         olddate = today - timedelta(days = backdays)
 
-        today = today.strftime('%d-%m-%Y')
-        olddate = olddate.strftime('%d-%m-%Y')
-        start = int(_time.mktime(_time.strptime(olddate, '%d-%m-%Y')))
-        end = int(_time.mktime(_time.strptime(today, '%d-%m-%Y')))
+        today = today.strftime(appConstants.DATE_FORMAT)
+        olddate = olddate.strftime(appConstants.DATE_FORMAT)
+        start = int(_time.mktime(_time.strptime(olddate, appConstants.DATE_FORMAT)))
+        end = int(_time.mktime(_time.strptime(today, appConstants.DATE_FORMAT)))
         interval = timeframe
 
         print('Fetching Share Prices for Dates ', olddate , " till ", today, " for Script : ", ticker)
 
         # defining a params dict for the parameters to be sent to the API
-        params = {'period1': start, 'period2': end, 'interval': interval}
-        headers = {
-            'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36',
-            'Accept' : '*/*',
-            'Accept-Encoding': 'gzip, deflate, br'
-            }
-        url = "https://query1.finance.yahoo.com/v8/finance/chart/{}".format(ticker)
+        params = {appConstants.PERIOD1_KEY: start, appConstants.PERIOD2_KEY: end, appConstants.INTERVAL_KEY: interval}
+        url = appConstants.YAHOO_FINANCE_API.format(ticker)
         # print('url is ' + url + '\n with params as ' + str(params))
-        response = requests.get(url=url, params=params, headers=headers)
+        response = requests.get(url=url, params=params, headers=appConstants.YAHOO_FINANCE_HEADERS)
         data = response.json()
         
 
         filtered_json = {}
-        filtered_json['timestamp'] = data['chart']['result'][0]['timestamp']
-        filtered_json['close']     = data['chart']['result'][0]['indicators']['quote'][0]['close']
-        filtered_json['volume']    = data['chart']['result'][0]['indicators']['quote'][0]['volume']
+        filtered_json[appConstants.TIMESTAMP] = data[appConstants.CHART][appConstants.RESULT][0][appConstants.TIMESTAMP]
+        filtered_json[appConstants.CLOSE_KEY]     = data[appConstants.CHART][appConstants.RESULT][0][appConstants.INDICATORS][appConstants.QUOTE][0][appConstants.CLOSE_KEY]
+        filtered_json[appConstants.VOLUME]    = data[appConstants.CHART][appConstants.RESULT][0][appConstants.INDICATORS][appConstants.QUOTE][0][appConstants.VOLUME]
 
         modify_timestamp(filtered_json)
 
         # Create DataFrame
         df = pd.DataFrame(filtered_json)
-        df['200MA'] =  df['close'].rolling(window=200).mean()
-        df['50MA']  =  df['close'].rolling(window=50).mean()
+        df[appConstants.MA_200_KEY] =  df[appConstants.CLOSE_KEY].rolling(window=200).mean()
+        df[appConstants.MA_50_KEY]  =  df[appConstants.CLOSE_KEY].rolling(window=50).mean()
         df.dropna(inplace=True)
 
-        crossovers_analyzer(df, 'close', '200MA', interval, ticker)
-        crossovers_analyzer(df, '50MA', '200MA', interval, ticker)
+        crossovers_analyzer(df, appConstants.CLOSE_KEY, appConstants.MA_200_KEY, interval, ticker)
+        crossovers_analyzer(df, appConstants.MA_50_KEY, appConstants.MA_200_KEY, interval, ticker)

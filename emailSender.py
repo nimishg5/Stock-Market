@@ -1,17 +1,14 @@
 import smtplib 
+import appConstants
   
 def trigger_mail(analysis):
-    subject = 'Nifty 50 Analysis by Best Script tracker Tool'
-    message = 'Subject: {}\n\n{}'.format(subject, analysis)
-    toMailingList = ['131nimish@gmail.com"','nandu.chill06@gmail.com']
+    message = 'Subject: {}\n\n{}'.format(appConstants.MAIL_SUBJECT, analysis)
 
-    print(analysis)
-
-    s = smtplib.SMTP('smtp.gmail.com', 587) 
+    s = smtplib.SMTP(appConstants.GMAIL_SPTP_URL, appConstants.GMAIL_SMTP_PORT) 
     s.ehlo()
     s.starttls() 
-    s.login("bestscripttracker@gmail.com", "jayv lfnb qkit sona")
-    s.sendmail("bestscripttracker@gmail.com", toMailingList, message)
+    s.login(appConstants.GMAIL_SMTP_LOGIN_ID, appConstants.GMAIL_SMTP_APP_PASSWORD)
+    s.sendmail(appConstants.GMAIL_SMTP_LOGIN_ID, appConstants.TO_MAILING_LIST, message)
     # print('message is ' + message)
     s.quit()
-    print('Email sent successfully')
+    print(appConstants.MAIL_SEDNING_SUCCESS_MESSAGE)
