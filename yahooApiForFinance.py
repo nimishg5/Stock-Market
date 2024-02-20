@@ -2,8 +2,6 @@ import datetime as dt
 import pandas as pd
 import time as _time
 import requests
-import smtplib
-import json
 from datetime import datetime
 from datetime import date
 from datetime import timedelta

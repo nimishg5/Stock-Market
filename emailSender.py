@@ -10,7 +10,7 @@ def trigger_mail(analysis):
     s = smtplib.SMTP('smtp.gmail.com', 587) 
     s.ehlo()
     s.starttls() 
-    s.login("bestscripttracker@gmail.com", "007nimish")
+    s.login("bestscripttracker@gmail.com", "jayv lfnb qkit sona")
     s.sendmail("bestscripttracker@gmail.com", toMailingList, message)
     # print('message is ' + message)
     s.quit()
