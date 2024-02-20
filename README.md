@@ -1,3 +1,3 @@
 USE this command to install python required dependencies for this Project
 
-pip install -r requirements.txt -t <path-to-the-lib-directory>
+pip install -r requirements.txt
