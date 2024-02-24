@@ -3,4 +3,4 @@ import calculator
 import DividendStocksScrapper
 
 DividendStocksScrapper.driver_func()
-# stockAnalyzerForNiftyFifty.triggerFirstCalculation()
+stockAnalyzerForNiftyFifty.triggerFirstCalculation()

@@ -64,7 +64,7 @@ def driver_func():
     # Convert 'Percentage' column to numeric type
     df1['Percentage'] = pd.to_numeric(df1['Percentage'])
     # Calculate the date before 4 days
-    four_days_ago = datetime.now() - timedelta(days=15)
+    four_days_ago = datetime.now() - timedelta(days=4)
     # Filter the DataFrame
     filtered_df = df1[(df1['Announcement'] > four_days_ago) & (df1['Percentage'] > 100)]
 
