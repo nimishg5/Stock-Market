@@ -2,7 +2,6 @@
 import requests
 from bs4 import BeautifulSoup
 import pandas as pd
-import csv
 import re
 from datetime import datetime, timedelta
 
@@ -36,7 +35,7 @@ def get_df_from_table(table):
 
     df = pd.concat([df, pd.DataFrame(records, columns=columns)], ignore_index=True)
     return df
-def driver_func():
+def driver_func(daysDiffVal , dividendPercentage):
     # Driver Code
     url = "https://www.moneycontrol.com/stocks/marketinfo/dividends_declared/homebody.php"
     table = generate_raw(url)
@@ -64,8 +63,8 @@ def driver_func():
     # Convert 'Percentage' column to numeric type
     df1['Percentage'] = pd.to_numeric(df1['Percentage'])
     # Calculate the date before 4 days
-    four_days_ago = datetime.now() - timedelta(days=4)
+    daysDiff = datetime.now() - timedelta(days=daysDiffVal)
     # Filter the DataFrame
-    filtered_df = df1[(df1['Announcement'] > four_days_ago) & (df1['Percentage'] > 100)]
+    filtered_df = df1[(df1['Announcement'] > daysDiff) & (df1['Percentage'] > dividendPercentage)]
 
-    filtered_df.to_excel('DividendStocksFiltered2.xlsx')
+    filtered_df.to_excel('DividendStocksFiltered.xlsx')
