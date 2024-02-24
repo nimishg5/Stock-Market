@@ -1,5 +1,4 @@
 import stockAnalyzerForNiftyFifty
-import calculator
 import DividendStocksScrapper
 
 
