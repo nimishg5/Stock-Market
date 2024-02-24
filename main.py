@@ -2,6 +2,7 @@ import appConstants
 from yahooApiForFinance import analyze_chart_for_multi_frames
 from emailSender import *
 from emailMessageResultModel import *
+import DividendStocksScrapper
 
 
 # This below map will help us to calculate 200MA and 50MA
@@ -17,3 +18,5 @@ for i in range(len(appConstants.TICKER_LIST)):
 
 
 trigger_mail(getEmailMessage())
+
+DividendStocksScrapper.driver_func()
