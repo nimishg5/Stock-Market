@@ -1,5 +1,6 @@
 import stockAnalyzerForNiftyFifty
 import calculator
+import DividendStocksScrapper
 
-print(calculator.calculatePnL(1,2))
-stockAnalyzerForNiftyFifty.triggerFirstCalculation()
+DividendStocksScrapper.driver_func()
+# stockAnalyzerForNiftyFifty.triggerFirstCalculation()
