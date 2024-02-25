@@ -19,7 +19,7 @@ def generate_raw(url):
     return table
 
 # Get the relevant fields
-def getFields(record):
+def get_fields(record):
     data = record.findAll('td')
     processed_record = []
     for item in data:
@@ -31,11 +31,12 @@ def get_df_from_table(table):
     df = pd.DataFrame(columns=columns)
     records = []
     for record in table:
-        records.append(getFields(record))
+        records.append(get_fields(record))
 
     df = pd.concat([df, pd.DataFrame(records, columns=columns)], ignore_index=True)
     return df
-def driver_func(daysDiffVal , dividendPercentage):
+
+def driver_func(days_diff_val , dividend_percentage):
     # Driver Code
     url = "https://www.moneycontrol.com/stocks/marketinfo/dividends_declared/homebody.php"
     table = generate_raw(url)
@@ -63,8 +64,8 @@ def driver_func(daysDiffVal , dividendPercentage):
     # Convert 'Percentage' column to numeric type
     df1['Percentage'] = pd.to_numeric(df1['Percentage'])
     # Calculate the date before 4 days
-    daysDiff = datetime.now() - timedelta(days=daysDiffVal)
+    daysDiff = datetime.now() - timedelta(days=days_diff_val)
     # Filter the DataFrame
-    filtered_df = df1[(df1['Announcement'] > daysDiff) & (df1['Percentage'] > dividendPercentage)]
+    filtered_df = df1[(df1['Announcement'] > daysDiff) & (df1['Percentage'] > dividend_percentage)]
 
-    filtered_df.to_excel('DividendStocksFiltered.xlsx')
+    return filtered_df
