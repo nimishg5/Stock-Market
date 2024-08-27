@@ -3,6 +3,7 @@ import requests
 from bs4 import BeautifulSoup
 import pandas as pd
 import re
+import StockValueScrapper
 from datetime import datetime, timedelta
 
 # Headers
@@ -41,6 +42,7 @@ def driver_func(days_diff_val , dividend_percentage):
     url = "https://www.moneycontrol.com/stocks/marketinfo/dividends_declared/homebody.php"
     table = generate_raw(url)
     df = get_df_from_table(table)
+    print(df)
     df = df.drop(df.index[:4])
     df = df.reset_index(drop=True)
     stocks = df['Company'].tolist()
@@ -67,5 +69,6 @@ def driver_func(days_diff_val , dividend_percentage):
     daysDiff = datetime.now() - timedelta(days=days_diff_val)
     # Filter the DataFrame
     filtered_df = df1[(df1['Announcement'] > daysDiff) & (df1['Percentage'] > dividend_percentage)]
+    StockValueScrapper.driver_func('123','1244')
 
     return filtered_df

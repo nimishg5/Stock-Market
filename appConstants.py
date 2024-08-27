@@ -56,7 +56,6 @@ TICKER_LIST = [
     "HINDUNILVR.NS",
     "ITC.NS",
     "ICICIBANK.NS",
-    "IBULHSGFIN.NS",
     "IOC.NS",
     "INDUSINDBK.NS",
     "INFY.NS",
